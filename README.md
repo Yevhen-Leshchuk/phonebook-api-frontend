@@ -1,1 +1,1 @@
-# phonebook-api-frontend
+Виджет отзывов

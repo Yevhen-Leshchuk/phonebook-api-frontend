@@ -1,0 +1,32 @@
+.item {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #5f5d5d;
+}
+
+.itemNumber {
+  margin-left: 5px;
+}
+
+.button {
+  margin-left: 10px;
+  padding: 5px;
+  background: transparent;
+  border: 1px solid #c9c9c9;
+  border-radius: 5px;
+  background-color: #c9c9c9;
+  color: #000000;
+  cursor: pointer;
+  font-family: Roboto;
+  font-weight: 500;
+  height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: border-color 0.25s,
+    background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100px;
+}
+
+.button:hover {
+  background-color: #ffffff;
+}
