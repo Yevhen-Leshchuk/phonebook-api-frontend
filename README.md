@@ -1,1 +1,1 @@
-Виджет отзывов
+phonebook-api-frontend

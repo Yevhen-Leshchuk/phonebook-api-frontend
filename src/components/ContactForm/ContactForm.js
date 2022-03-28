@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -13,6 +14,8 @@ const validationSchema = Yup.object({
 });
 
 class ContactForm extends Component {
+  nameInputId = nanoid();
+  numberInputId = nanoid();
   render() {
     return (
       <>
@@ -33,7 +36,7 @@ class ContactForm extends Component {
               type="text"
               name="name"
               placeholder="Name"
-              id={this.numberInputId}
+              id={this.nameInputId}
             />
             <p className={s.error}>
               <ErrorMessage name="name" />
@@ -65,4 +68,5 @@ class ContactForm extends Component {
 ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
+
 export default ContactForm;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { notice } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
@@ -8,84 +8,57 @@ import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
 import Filter from 'components/Filter';
 import Section from 'components/Section';
-// import contacts from './components/Filter/contacts.json';
 
-class App extends Component {
-  state = {
-    contacts: [],
-    // contacts: contacts,
-    filter: '',
-  };
+function App() {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
-  nameInputId = nanoid();
-  numberInputId = nanoid();
-
-  componentDidMount() {
+  useEffect(() => {
     const contacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(contacts);
 
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+    setContacts(parsedContacts);
+  }, []);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  addContact = data => {
+  const addContact = data => {
     const { name, number } = data;
 
-    if (this.checkContactName(name) || this.checkContactNumber(number)) {
-      this.showMessageSameContact();
+    if (checkContactName(name) || checkContactNumber(number)) {
+      showMessageSameContact(name);
       return;
     }
 
     const newContact = { id: nanoid(), name, number };
 
-    this.setState(({ contacts }) => ({
-      contacts: [newContact, ...contacts],
-    }));
+    setContacts([newContact, ...contacts]);
   };
 
-  deleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+  const deleteContact = contactId => {
+    setContacts(state => state.filter(contact => contact.id !== contactId));
   };
 
-  checkContactName(name) {
+  const checkContactName = name => {
     const checkName = name.toLowerCase();
 
-    return this.state.contacts.find(
-      ({ name }) => name.toLowerCase() === checkName
-    );
-  }
+    return contacts.find(contact => contact.name.toLowerCase() === checkName);
+  };
 
-  checkContactNumber(number) {
+  const checkContactNumber = number => {
     const checkNumber = Number(number);
 
-    return this.state.contacts.find(
-      ({ number }) => Number(number) === checkNumber
-    );
-  }
-
-  formSubmitHandler = data => {
-    console.log(data);
-    this.setState({
-      contacts: data.contacts,
-    });
+    return contacts.find(contact => Number(contact.number) === checkNumber);
   };
 
-  changeFilter = event => {
-    this.setState({ filter: event.currentTarget.value });
+  const changeFilter = event => {
+    const filterValue = event.currentTarget.value;
+    setFilter(filterValue);
   };
 
-  getVisibleContacts = () => {
-    const { contacts, filter } = this.state;
-
+  const getVisibleContacts = () => {
     const normalizedFilter = filter.toLowerCase();
 
     return contacts.filter(contact =>
@@ -93,33 +66,33 @@ class App extends Component {
     );
   };
 
-  showMessageSameContact = () => {
-    return notice({
-      text: 'This name already exists ',
-      width: '370px',
-    });
+  const showMessageSameContact = name => {
+    return contacts.map(contact =>
+      contact.name === name
+        ? notice({
+            text: 'This name already exists ',
+            width: '370px',
+          })
+        : notice({
+            text: 'This number already exists ',
+            width: '370px',
+          })
+    );
   };
 
-  render() {
-    const { filter } = this.state;
+  const visibleContacts = getVisibleContacts();
 
-    const visibleContacts = this.getVisibleContacts();
-
-    return (
-      <Container>
-        <Section title="Phonebook">
-          <ContactForm onSubmit={this.addContact} />
-        </Section>
-        <Section title="Contacts">
-          <Filter value={filter} onChange={this.changeFilter} />
-          <ContactList
-            data={visibleContacts}
-            onDeleteContact={this.deleteContact}
-          />
-        </Section>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Section title="Phonebook">
+        <ContactForm onSubmit={addContact} />
+      </Section>
+      <Section title="Contacts">
+        <Filter value={filter} onChange={changeFilter} />
+        <ContactList data={visibleContacts} onDeleteContact={deleteContact} />
+      </Section>
+    </Container>
+  );
 }
 
 export default App;
