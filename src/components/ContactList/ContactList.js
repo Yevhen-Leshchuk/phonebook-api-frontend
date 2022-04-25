@@ -1,11 +1,13 @@
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import actions from '../../redux/contacts/contacts-actions';
 import s from './ContactList.module.css';
 
-const Contacts = ({ data, onDeleteContact }) => {
+const Contacts = ({ contacts, onDeleteContact }) => {
   return (
     <>
       <ul>
-        {data.map(({ name, number, id }) => (
+        {contacts.map(({ name, number, id }) => (
           <li className={s.item} key={name}>
             {name}:<span className={s.itemNumber}>{number}</span>
             <button
@@ -22,6 +24,22 @@ const Contacts = ({ data, onDeleteContact }) => {
   );
 };
 
+const getVisibleContacts = (allContacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allContacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedFilter)
+  );
+};
+
+const mapStateToProps = ({ contacts: { items, filter } }) => ({
+  contacts: getVisibleContacts(items, filter),
+});
+
+const mapDispatchToProps = dispatch => ({
+  onDeleteContact: id => dispatch(actions.deleteContact(id)),
+});
+
 Contacts.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
@@ -33,4 +51,4 @@ Contacts.propTypes = {
   onDeleteContact: PropTypes.func.isRequired,
 };
 
-export default Contacts;
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

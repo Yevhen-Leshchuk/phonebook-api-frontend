@@ -1,8 +1,12 @@
-import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { nanoid } from 'nanoid';
+import { notice } from '@pnotify/core/dist/PNotify.js';
+import '@pnotify/core/dist/PNotify.css';
+import '@pnotify/core/dist/BrightTheme.css';
+import actions from '../../redux/contacts/contacts-actions';
 import s from './ContactForm.module.css';
 
 const validationSchema = Yup.object({
@@ -13,60 +17,108 @@ const validationSchema = Yup.object({
   number: Yup.string().min(7, 'must be 7 characters long').required('Required'),
 });
 
-class ContactForm extends Component {
-  nameInputId = nanoid();
-  numberInputId = nanoid();
-  render() {
-    return (
-      <>
-        <Formik
-          initialValues={{ name: '', number: '' }}
-          validationSchema={validationSchema}
-          onSubmit={(values, { resetForm }) => {
-            this.props.onSubmit(values);
-            resetForm();
-          }}
-        >
-          <Form className={s.form}>
-            <label className={s.nameLabel} htmlFor={this.nameInputId}>
-              Name
-            </label>
-            <Field
-              className={s.input}
-              type="text"
-              name="name"
-              placeholder="Name"
-              id={this.nameInputId}
-            />
-            <p className={s.error}>
-              <ErrorMessage name="name" />
-            </p>
+function ContactForm({ onSubmit, contacts }) {
+  const nameInputId = nanoid();
+  const numberInputId = nanoid();
 
-            <label className={s.label} htmlFor={this.numberInputId}>
-              Number
-            </label>
-            <Field
-              className={s.input}
-              type="tel"
-              name="number"
-              placeholder="Number"
-              id={this.numberInputId}
-            />
-            <p className={s.error}>
-              <ErrorMessage name="number" />
-            </p>
-            <button className={s.button} type="submit">
-              Add contact
-            </button>
-          </Form>
-        </Formik>
-      </>
+  const checkContactName = name => {
+    const checkName = name.toLowerCase();
+
+    return contacts.find(contact => contact.name.toLowerCase() === checkName);
+  };
+
+  const checkContactNumber = number => {
+    const checkNumber = Number(number);
+
+    return contacts.find(contact => Number(contact.number) === checkNumber);
+  };
+
+  const showMessageSameContact = name => {
+    return contacts.map(contact =>
+      contact.name === name
+        ? notice({
+            text: 'This name already exists ',
+            width: '370px',
+          })
+        : notice({
+            text: 'This number already exists ',
+            width: '370px',
+          })
     );
-  }
+  };
+
+  return (
+    <>
+      <Formik
+        initialValues={{ name: '', number: '' }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { resetForm }) => {
+          if (
+            checkContactName(values.name) ||
+            checkContactNumber(values.number)
+          ) {
+            showMessageSameContact(values.name);
+            return;
+          }
+          onSubmit(values);
+          resetForm();
+        }}
+      >
+        <Form className={s.form}>
+          <label className={s.nameLabel} htmlFor={nameInputId}>
+            Name
+          </label>
+          <Field
+            className={s.input}
+            type="text"
+            name="name"
+            placeholder="Name"
+            id={nameInputId}
+          />
+          <p className={s.error}>
+            <ErrorMessage name="name" />
+          </p>
+
+          <label className={s.label} htmlFor={numberInputId}>
+            Number
+          </label>
+          <Field
+            className={s.input}
+            type="tel"
+            name="number"
+            placeholder="Number"
+            id={numberInputId}
+          />
+          <p className={s.error}>
+            <ErrorMessage name="number" />
+          </p>
+          <button className={s.button} type="submit">
+            Add contact
+          </button>
+        </Form>
+      </Formik>
+    </>
+  );
 }
+
+const mapStateToProps = ({ contacts: { items } }) => {
+  return {
+    contacts: items,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onSubmit: values => dispatch(actions.addContact(values)),
+});
 
 ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
 };
 
-export default ContactForm;
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
