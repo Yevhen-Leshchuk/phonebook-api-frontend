@@ -1,5 +1,4 @@
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
@@ -7,6 +6,7 @@ import { notice } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 import actions from '../../redux/contacts/contacts-actions';
+import { getContacts } from '../../redux/contacts/contacts-selectors';
 import s from './ContactForm.module.css';
 
 const validationSchema = Yup.object({
@@ -17,9 +17,14 @@ const validationSchema = Yup.object({
   number: Yup.string().min(7, 'must be 7 characters long').required('Required'),
 });
 
-function ContactForm({ onSubmit, contacts }) {
+export default function ContactForm() {
   const nameInputId = nanoid();
   const numberInputId = nanoid();
+
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+
+  const onSubmit = values => dispatch(actions.addContact(values));
 
   const checkContactName = name => {
     const checkName = name.toLowerCase();
@@ -100,25 +105,3 @@ function ContactForm({ onSubmit, contacts }) {
     </>
   );
 }
-
-const mapStateToProps = ({ contacts: { items } }) => {
-  return {
-    contacts: items,
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  onSubmit: values => dispatch(actions.addContact(values)),
-});
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
