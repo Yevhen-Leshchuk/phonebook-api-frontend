@@ -5,8 +5,7 @@ import { nanoid } from 'nanoid';
 import { notice } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-import contactsOperations from '../../redux/contacts/contacts-operations';
-import { getContacts } from '../../redux/contacts/contacts-selectors';
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 import s from './ContactForm.module.css';
 
 const validationSchema = Yup.object({
@@ -21,7 +20,7 @@ export default function ContactForm() {
   const nameInputId = nanoid();
   const numberInputId = nanoid();
 
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(contactsSelectors.getContacts);
   const dispatch = useDispatch();
 
   const onSubmit = values => dispatch(contactsOperations.addContact(values));

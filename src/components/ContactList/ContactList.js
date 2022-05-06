@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import contactsOperations from '../../redux/contacts/contacts-operations';
-import {
-  getVisibleContacts,
-  getMessageError,
-} from '../../redux/contacts/contacts-selectors';
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 import s from './ContactList.module.css';
 
 export default function Contacts() {
-  const contacts = useSelector(getVisibleContacts);
-  const error = useSelector(getMessageError);
+  const contacts = useSelector(contactsSelectors.getVisibleContacts);
+  const error = useSelector(contactsSelectors.getMessageError);
   const dispatch = useDispatch();
 
   useEffect(() => {

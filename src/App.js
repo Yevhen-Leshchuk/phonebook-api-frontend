@@ -1,5 +1,5 @@
-import Container from './components/Container';
-import ContactsViews from './views/ContactsViews';
+import Container from 'components/Container';
+import ContactsViews from 'views/ContactsViews';
 
 function App() {
   return (
