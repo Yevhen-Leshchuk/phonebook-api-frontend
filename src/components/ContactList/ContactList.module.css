@@ -30,3 +30,9 @@
 .button:hover {
   background-color: #ffffff;
 }
+
+.error {
+  font-size: 28px;
+  color: #5f5d5d;
+  text-align: center;
+}

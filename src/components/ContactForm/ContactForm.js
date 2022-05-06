@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { notice } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-import actions from '../../redux/contacts/contacts-actions';
+import contactsOperations from '../../redux/contacts/contacts-operations';
 import { getContacts } from '../../redux/contacts/contacts-selectors';
 import s from './ContactForm.module.css';
 
@@ -14,7 +14,7 @@ const validationSchema = Yup.object({
     .min(3, 'must be at least 3 characters long')
     .max(10, 'must  be no more than 10 characters long')
     .required('Required'),
-  number: Yup.string().min(7, 'must be 7 characters long').required('Required'),
+  phone: Yup.string().min(7, 'must be 7 characters long').required('Required'),
 });
 
 export default function ContactForm() {
@@ -24,7 +24,7 @@ export default function ContactForm() {
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
-  const onSubmit = values => dispatch(actions.addContact(values));
+  const onSubmit = values => dispatch(contactsOperations.addContact(values));
 
   const checkContactName = name => {
     const checkName = name.toLowerCase();
@@ -32,39 +32,43 @@ export default function ContactForm() {
     return contacts.find(contact => contact.name.toLowerCase() === checkName);
   };
 
-  const checkContactNumber = number => {
-    const checkNumber = Number(number);
+  const checkContactNumber = phone => {
+    const checkNumber = phone;
+    console.log(checkNumber);
 
-    return contacts.find(contact => Number(contact.number) === checkNumber);
+    return contacts.find(contact => contact.phone === checkNumber);
   };
 
-  const showMessageSameContact = name => {
-    return contacts.map(contact =>
-      contact.name === name
-        ? notice({
-            text: 'This name already exists ',
-            width: '370px',
-          })
-        : notice({
-            text: 'This number already exists ',
-            width: '370px',
-          })
-    );
+  const showMessageSameContactName = () => {
+    notice({
+      text: 'This name already exists',
+      width: '370px',
+    });
+  };
+
+  const showMessageSameContactPhone = () => {
+    notice({
+      text: 'This phone already exists',
+      width: '370px',
+    });
   };
 
   return (
     <>
       <Formik
-        initialValues={{ name: '', number: '' }}
+        initialValues={{ name: '', phone: '' }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          if (
-            checkContactName(values.name) ||
-            checkContactNumber(values.number)
-          ) {
-            showMessageSameContact(values.name);
+          if (checkContactName(values.name)) {
+            showMessageSameContactName();
             return;
           }
+
+          if (checkContactNumber(values.phone)) {
+            showMessageSameContactPhone();
+            return;
+          }
+
           onSubmit(values);
           resetForm();
         }}
@@ -85,17 +89,17 @@ export default function ContactForm() {
           </p>
 
           <label className={s.label} htmlFor={numberInputId}>
-            Number
+            Phone
           </label>
           <Field
             className={s.input}
             type="tel"
-            name="number"
-            placeholder="Number"
+            name="phone"
+            placeholder="Phone"
             id={numberInputId}
           />
           <p className={s.error}>
-            <ErrorMessage name="number" />
+            <ErrorMessage name="phone" />
           </p>
           <button className={s.button} type="submit">
             Add contact

@@ -1,21 +1,33 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import actions from '../../redux/contacts/contacts-actions';
-import { getVisibleContacts } from '../../redux/contacts/contacts-selectors';
+import contactsOperations from '../../redux/contacts/contacts-operations';
+import {
+  getVisibleContacts,
+  getMessageError,
+} from '../../redux/contacts/contacts-selectors';
 import s from './ContactList.module.css';
 
 export default function Contacts() {
   const contacts = useSelector(getVisibleContacts);
+  const error = useSelector(getMessageError);
   const dispatch = useDispatch();
 
-  const onDeleteContact = id => dispatch(actions.deleteContact(id));
+  useEffect(() => {
+    dispatch(contactsOperations.fetchContacts());
+  }, [dispatch]);
+
+  const onDeleteContact = id => dispatch(contactsOperations.deleteContact(id));
 
   return (
     <>
+      {error && contacts.length === 0 && (
+        <h1 className={s.error}>Contacts not found!</h1>
+      )}
       <ul>
-        {contacts.map(({ name, number, id }) => (
+        {contacts.map(({ name, phone, id }) => (
           <li className={s.item} key={name}>
-            {name}:<span className={s.itemNumber}>{number}</span>
+            {name}:<span className={s.itemNumber}>{phone}</span>
             <button
               className={s.button}
               type="button"
@@ -35,7 +47,7 @@ Contacts.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
     })
   ),
 };
