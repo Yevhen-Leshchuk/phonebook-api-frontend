@@ -2,10 +2,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
-import { notice } from '@pnotify/core/dist/PNotify.js';
+import { notice, success } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import LoaderButton from 'components/LoaderButton';
 import s from './ContactForm.module.css';
 
 const validationSchema = Yup.object({
@@ -21,6 +22,8 @@ export default function ContactForm() {
   const numberInputId = nanoid();
 
   const contacts = useSelector(contactsSelectors.getContacts);
+  const isAdding = useSelector(contactsSelectors.getAddLoader);
+
   const dispatch = useDispatch();
 
   const onSubmit = values => dispatch(contactsOperations.addContact(values));
@@ -33,7 +36,6 @@ export default function ContactForm() {
 
   const checkContactNumber = phone => {
     const checkNumber = phone;
-    console.log(checkNumber);
 
     return contacts.find(contact => contact.phone === checkNumber);
   };
@@ -48,6 +50,13 @@ export default function ContactForm() {
   const showMessageSameContactPhone = () => {
     notice({
       text: 'This phone already exists',
+      width: '370px',
+    });
+  };
+
+  const showMessageAddContact = () => {
+    success({
+      text: 'Contact added successfully!',
       width: '370px',
     });
   };
@@ -69,6 +78,7 @@ export default function ContactForm() {
           }
 
           onSubmit(values);
+          showMessageAddContact();
           resetForm();
         }}
       >
@@ -100,8 +110,9 @@ export default function ContactForm() {
           <p className={s.error}>
             <ErrorMessage name="phone" />
           </p>
-          <button className={s.button} type="submit">
-            Add contact
+          <button className={s.button} type="submit" disabled={isAdding}>
+            <span className={s.TextButton}>Add contact</span>
+            {isAdding && <LoaderButton />}
           </button>
         </Form>
       </Formik>
