@@ -1,13 +1,13 @@
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { success } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-import { contactsOperations } from 'redux/contacts';
+import { useDeleteContactMutation } from 'redux/contacts/contactsSlice';
+import LoaderButton from 'components/LoaderButton';
 import s from './ContactListItem.module.css';
 
 const ContactsListItem = ({ name, phone, id }) => {
-  const dispatch = useDispatch();
+  const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
 
   const showMessagedeleteContact = () => {
     success({
@@ -16,20 +16,20 @@ const ContactsListItem = ({ name, phone, id }) => {
     });
   };
 
-  const onDeleteContact = id => {
-    dispatch(contactsOperations.deleteContact(id));
-    showMessagedeleteContact();
-  };
-
   return (
     <li className={s.item} key={name}>
       {name}:<span className={s.itemNumber}>{phone}</span>
       <button
         className={s.button}
         type="button"
-        onClick={() => onDeleteContact(id)}
+        onClick={() => {
+          deleteContact(id);
+          showMessagedeleteContact();
+        }}
+        disabled={isDeleting}
       >
         <span className={s.TextButton}>Delete</span>
+        {isDeleting && <LoaderButton />}
       </button>
     </li>
   );

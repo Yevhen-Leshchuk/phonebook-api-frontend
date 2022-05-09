@@ -8,7 +8,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import logger from 'redux-logger';
-import contactsReducer from './contacts/contactsSlice';
+import { contactApi } from './contacts/contactsSlice';
 
 const middleware = getDefaultMiddleware => [
   ...getDefaultMiddleware({
@@ -16,12 +16,13 @@ const middleware = getDefaultMiddleware => [
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
+  contactApi.middleware,
   logger,
 ];
 
 const store = configureStore({
   reducer: {
-    contacts: contactsReducer,
+    [contactApi.reducerPath]: contactApi.reducer,
   },
   devTools: process.env.NODE_ENV === 'development',
   middleware,

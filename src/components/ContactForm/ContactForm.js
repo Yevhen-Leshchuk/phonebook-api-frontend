@@ -1,11 +1,11 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
 import { notice, success } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import { useFetchContactsQuery } from 'redux/contacts/contactsSlice';
+import { useAddContactMutation } from 'redux/contacts/contactsSlice';
 import LoaderButton from 'components/LoaderButton';
 import s from './ContactForm.module.css';
 
@@ -18,26 +18,22 @@ const validationSchema = Yup.object({
 });
 
 export default function ContactForm() {
+  const { data } = useFetchContactsQuery();
+  const [addContact, { isLoading: isAdding }] = useAddContactMutation();
+
   const nameInputId = nanoid();
   const numberInputId = nanoid();
-
-  const contacts = useSelector(contactsSelectors.getContacts);
-  const isAdding = useSelector(contactsSelectors.getAddLoader);
-
-  const dispatch = useDispatch();
-
-  const onSubmit = values => dispatch(contactsOperations.addContact(values));
 
   const checkContactName = name => {
     const checkName = name.toLowerCase();
 
-    return contacts.find(contact => contact.name.toLowerCase() === checkName);
+    return data?.find(contact => contact.name.toLowerCase() === checkName);
   };
 
   const checkContactNumber = phone => {
     const checkNumber = phone;
 
-    return contacts.find(contact => contact.phone === checkNumber);
+    return data?.find(contact => contact.phone === checkNumber);
   };
 
   const showMessageSameContactName = () => {
@@ -77,7 +73,7 @@ export default function ContactForm() {
             return;
           }
 
-          onSubmit(values);
+          addContact(values);
           showMessageAddContact();
           resetForm();
         }}
