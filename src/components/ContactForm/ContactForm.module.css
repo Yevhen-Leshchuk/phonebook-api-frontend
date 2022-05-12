@@ -58,9 +58,9 @@
     background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* .button:hover {
+.button:hover {
   background-color: #ffffff;
-} */
+}
 
 .TextButton {
   margin-right: 5px;

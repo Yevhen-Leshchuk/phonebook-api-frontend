@@ -1,8 +1,9 @@
+import Section from 'components/Section';
 import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
-import Section from 'components/Section';
+import s from './ContactsPage.module.css';
 
-function ContactsViews() {
+const ContactsPage = () => {
   return (
     <>
       <Section title="Phonebook">
@@ -13,6 +14,5 @@ function ContactsViews() {
       </Section>
     </>
   );
-}
-
-export default ContactsViews;
+};
+export default ContactsPage;
