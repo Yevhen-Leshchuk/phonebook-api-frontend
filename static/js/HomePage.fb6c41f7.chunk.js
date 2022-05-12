@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkphonebook_api_frontend=self.webpackChunkphonebook_api_frontend||[]).push([[460],{1541:function(n,e,o){o.r(e),o.d(e,{default:function(){return t}});var r=o(184),t=function(){return(0,r.jsx)("h2",{children:"HomePage"})}}}]);
+//# sourceMappingURL=HomePage.fb6c41f7.chunk.js.map

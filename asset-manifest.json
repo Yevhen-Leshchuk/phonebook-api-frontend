@@ -1,13 +1,28 @@
 {
   "files": {
-    "main.css": "/phonebook-api-frontend/static/css/main.68e6281f.css",
-    "main.js": "/phonebook-api-frontend/static/js/main.5889a0f6.js",
+    "main.css": "/phonebook-api-frontend/static/css/main.03ff7f09.css",
+    "main.js": "/phonebook-api-frontend/static/js/main.12a0cfaf.js",
+    "HomePage.css": "/phonebook-api-frontend/static/css/HomePage.31d6cfe0.chunk.css",
+    "HomePage.js": "/phonebook-api-frontend/static/js/HomePage.fb6c41f7.chunk.js",
+    "RegistrationPage.css": "/phonebook-api-frontend/static/css/RegistrationPage.31d6cfe0.chunk.css",
+    "RegistrationPage.js": "/phonebook-api-frontend/static/js/RegistrationPage.c2a0027b.chunk.js",
+    "LoginPage.css": "/phonebook-api-frontend/static/css/LoginPage.31d6cfe0.chunk.css",
+    "LoginPage.js": "/phonebook-api-frontend/static/js/LoginPage.3a67f3ac.chunk.js",
+    "ContactsPage.css": "/phonebook-api-frontend/static/css/ContactsPage.4847c818.chunk.css",
+    "ContactsPage.js": "/phonebook-api-frontend/static/js/ContactsPage.e95b28ed.chunk.js",
+    "static/js/494.221e2ecf.chunk.js": "/phonebook-api-frontend/static/js/494.221e2ecf.chunk.js",
     "index.html": "/phonebook-api-frontend/index.html",
-    "main.68e6281f.css.map": "/phonebook-api-frontend/static/css/main.68e6281f.css.map",
-    "main.5889a0f6.js.map": "/phonebook-api-frontend/static/js/main.5889a0f6.js.map"
+    "main.03ff7f09.css.map": "/phonebook-api-frontend/static/css/main.03ff7f09.css.map",
+    "main.12a0cfaf.js.map": "/phonebook-api-frontend/static/js/main.12a0cfaf.js.map",
+    "HomePage.fb6c41f7.chunk.js.map": "/phonebook-api-frontend/static/js/HomePage.fb6c41f7.chunk.js.map",
+    "RegistrationPage.c2a0027b.chunk.js.map": "/phonebook-api-frontend/static/js/RegistrationPage.c2a0027b.chunk.js.map",
+    "LoginPage.3a67f3ac.chunk.js.map": "/phonebook-api-frontend/static/js/LoginPage.3a67f3ac.chunk.js.map",
+    "ContactsPage.4847c818.chunk.css.map": "/phonebook-api-frontend/static/css/ContactsPage.4847c818.chunk.css.map",
+    "ContactsPage.e95b28ed.chunk.js.map": "/phonebook-api-frontend/static/js/ContactsPage.e95b28ed.chunk.js.map",
+    "494.221e2ecf.chunk.js.map": "/phonebook-api-frontend/static/js/494.221e2ecf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.68e6281f.css",
-    "static/js/main.5889a0f6.js"
+    "static/css/main.03ff7f09.css",
+    "static/js/main.12a0cfaf.js"
   ]
 }
