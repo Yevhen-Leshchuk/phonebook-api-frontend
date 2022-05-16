@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import UserMenu from 'components/UserMenu';
 import s from './Navigation.module.css';
 
 const Navigation = () => (
@@ -13,22 +12,7 @@ const Navigation = () => (
       >
         Home
       </NavLink>
-      <NavLink
-        to="register"
-        className={({ isActive }) =>
-          isActive ? `${s.activeLink}` : `${s.link}`
-        }
-      >
-        Sign Up
-      </NavLink>
-      <NavLink
-        to="login"
-        className={({ isActive }) =>
-          isActive ? `${s.activeLink}` : `${s.link}`
-        }
-      >
-        Sign In
-      </NavLink>
+
       <NavLink
         to="contacts"
         className={({ isActive }) =>
@@ -37,8 +21,15 @@ const Navigation = () => (
       >
         Contacts
       </NavLink>
+      <NavLink
+        to="contacts-update"
+        className={({ isActive }) =>
+          isActive ? `${s.activeLink}` : `${s.link}`
+        }
+      >
+        Edit Contact
+      </NavLink>
     </nav>
-    <UserMenu />
   </>
 );
 

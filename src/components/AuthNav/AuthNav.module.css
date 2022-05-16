@@ -1,0 +1,17 @@
+.link {
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px;
+  color: #060e0f;
+  font-weight: 500;
+  font-size: 27px;
+}
+
+.link:hover {
+  color: #ffffff;
+}
+
+.activeLink {
+  composes: link;
+  color: #ffffff;
+}

@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from 'components/Layout';
 import Loader from 'components/Loader';
+// import ContactsEditPage from 'pages/ContactsEditPage /ContactsEditPage ';
 
 const HomePage = lazy(() =>
   import('pages/HomePage/HomePage' /* webpackChunkName: "HomePage" */)
@@ -23,6 +24,12 @@ const ContactsPage = lazy(() =>
   )
 );
 
+const ContactsEditPage = lazy(() =>
+  import(
+    'pages/ContactsEditPage /ContactsEditPage ' /* webpackChunkName: "ContactsEditPage" */
+  )
+);
+
 function App() {
   return (
     <>
@@ -33,6 +40,7 @@ function App() {
             <Route path="register" element={<RegistrationPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="contacts" element={<ContactsPage />} />
+            <Route path="contacts-update" element={<ContactsEditPage />} />
           </Route>
         </Routes>
       </Suspense>

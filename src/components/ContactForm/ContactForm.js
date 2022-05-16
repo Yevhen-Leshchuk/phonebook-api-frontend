@@ -1,11 +1,17 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
 import { notice, success } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-import { useFetchContactsQuery } from 'redux/contacts/contactsSlice';
-import { useAddContactMutation } from 'redux/contacts/contactsSlice';
+import {
+  useFetchContactsQuery,
+  useAddContactMutation,
+  useUpdateContactMutation,
+} from 'redux/contacts/contactsSlice';
+import { useLogInMutation } from 'redux/auth/authSlice';
 import LoaderButton from 'components/LoaderButton';
 import s from './ContactForm.module.css';
 
@@ -14,12 +20,31 @@ const validationSchema = Yup.object({
     .min(3, 'must be at least 3 characters long')
     .max(10, 'must  be no more than 10 characters long')
     .required('Required'),
-  phone: Yup.string().min(7, 'must be 7 characters long').required('Required'),
+  number: Yup.string()
+    .min(7, 'must be 7 characters long')
+    .max(10, 'must  be no more than 10 characters long')
+    .required('Required'),
 });
 
-export default function ContactForm() {
-  const { data } = useFetchContactsQuery();
+export default function ContactForm({ name, number, id }) {
+  const [nameValue, setNameValue] = useState('');
+  const [numberValue, setNumberValue] = useState('');
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    setNameValue(name);
+    setNumberValue(number);
+  }, [name, number]);
+
+  const [logIn, { data: user }] = useLogInMutation({
+    fixedCacheKey: 'shared-logIn',
+  });
+  const token = user?.token;
+
+  const { data } = useFetchContactsQuery(token);
   const [addContact, { isLoading: isAdding }] = useAddContactMutation();
+  const [updateContact] = useUpdateContactMutation();
 
   const nameInputId = nanoid();
   const numberInputId = nanoid();
@@ -30,10 +55,10 @@ export default function ContactForm() {
     return data?.find(contact => contact.name.toLowerCase() === checkName);
   };
 
-  const checkContactNumber = phone => {
-    const checkNumber = phone;
+  const checkContactNumber = number => {
+    const checkNumber = number;
 
-    return data?.find(contact => contact.phone === checkNumber);
+    return data?.find(contact => contact.number === checkNumber);
   };
 
   const showMessageSameContactName = () => {
@@ -57,24 +82,43 @@ export default function ContactForm() {
     });
   };
 
+  const showMessageupdateContact = () => {
+    success({
+      text: 'Contact successfully updated!',
+      width: '370px',
+    });
+  };
+
   return (
     <>
       <Formik
-        initialValues={{ name: '', phone: '' }}
+        initialValues={{ name: '', number: '', token }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          if (checkContactName(values.name)) {
-            showMessageSameContactName();
-            return;
-          }
+          const update = {
+            ...values,
+            id,
+          };
 
-          if (checkContactNumber(values.phone)) {
-            showMessageSameContactPhone();
-            return;
-          }
+          if (update.id !== undefined) {
+            updateContact(update);
+            showMessageupdateContact();
+            navigate('/contacts');
+            resetForm();
+          } else {
+            if (checkContactName(values.name)) {
+              showMessageSameContactName();
+              return;
+            }
 
-          addContact(values);
-          showMessageAddContact();
+            if (checkContactNumber(values.number)) {
+              showMessageSameContactPhone();
+              return;
+            }
+
+            addContact(values);
+            showMessageAddContact();
+          }
           resetForm();
         }}
       >
@@ -92,22 +136,22 @@ export default function ContactForm() {
           <p className={s.error}>
             <ErrorMessage name="name" />
           </p>
-
           <label className={s.label} htmlFor={numberInputId}>
             Phone
           </label>
+
           <Field
             className={s.input}
             type="tel"
-            name="phone"
+            name="number"
             placeholder="Phone"
             id={numberInputId}
           />
           <p className={s.error}>
-            <ErrorMessage name="phone" />
+            <ErrorMessage name="number" />
           </p>
           <button className={s.button} type="submit" disabled={isAdding}>
-            <span className={s.TextButton}>Add contact</span>
+            <span className={s.TextButton}>Save contact</span>
             {isAdding && <LoaderButton />}
           </button>
         </Form>

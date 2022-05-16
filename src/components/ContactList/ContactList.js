@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { useFetchContactsQuery } from 'redux/contacts/contactsSlice';
+import { useLogInMutation } from 'redux/auth/authSlice';
 import Loader from 'components/Loader';
 import ContactListItem from 'components/ContactListItem';
 import Filter from 'components/Filter';
 import s from './ContactList.module.css';
 
 const ContactList = () => {
-  const { data, error, isFetching, isError } = useFetchContactsQuery();
   const [filter, setFilter] = useState('');
+  const [logIn, { data: user }] = useLogInMutation({
+    fixedCacheKey: 'shared-logIn',
+  });
+  const token = user?.token;
+
+  const { data, error, isFetching, isError } = useFetchContactsQuery(token);
 
   const onChange = event => {
     const { value } = event.currentTarget;
@@ -24,7 +30,6 @@ const ContactList = () => {
   const contacts = getVisibleContacts();
   const showContactData = contacts && !error;
   const showNotFoundError = isError && error.status === 404;
-
   return (
     <>
       <Filter onChange={onChange} filter={filter} />

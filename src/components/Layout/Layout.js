@@ -1,14 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import Navigation from 'components/Navigation';
+import AppBar from 'components/AppBar';
 import Container from 'components/Container';
-import s from './Layout.module.css';
 
 function ContactsViews() {
   return (
     <>
-      <header className={s.header}>
-        <Navigation />
-      </header>
+      <AppBar />
       <Container>
         <Outlet />
       </Container>
