@@ -12,8 +12,8 @@ const ContactsEditPage = () => {
   const [logIn, { data: user }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
-  const token = user?.token;
 
+  const token = user?.token;
   const { data } = useFetchContactsQuery(token);
 
   useEffect(() => {
