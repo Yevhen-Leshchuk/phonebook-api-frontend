@@ -12,11 +12,11 @@ const ContactList = () => {
     fixedCacheKey: 'shared-logIn',
   });
   const token = user?.token;
-
-  const { data, error, isFetching, isError } = useFetchContactsQuery(token);
+  const { data, isFetching } = useFetchContactsQuery(token);
 
   const onChange = event => {
     const { value } = event.currentTarget;
+
     setFilter(value);
   };
 
@@ -28,19 +28,26 @@ const ContactList = () => {
     );
   };
   const contacts = getVisibleContacts();
-  const showContactData = contacts && !error;
-  const showNotFoundError = isError && error.status === 404;
+  const showNotFoundContacts = contacts?.length === 0;
+
   return (
     <>
-      <Filter onChange={onChange} filter={filter} />
-      <ul>
-        {isFetching && <Loader />}
-        {showNotFoundError && <h1 className={s.error}>Contacts not found!</h1>}
-        {showContactData &&
-          contacts.map(contact => (
-            <ContactListItem key={contact.id} {...contact} />
-          ))}
-      </ul>
+      <div className={s.contactsListBox}>
+        <h2 className={s.title}>Contacts</h2>
+
+        <Filter onChange={onChange} filter={filter} />
+
+        <ul className={s.contactsBox}>
+          {isFetching && <Loader />}
+          {showNotFoundContacts && (
+            <h1 className={s.error}>Contacts not found!</h1>
+          )}
+          {contacts &&
+            contacts.map(contact => (
+              <ContactListItem key={contact.id} {...contact} />
+            ))}
+        </ul>
+      </div>
     </>
   );
 };

@@ -1,16 +1,15 @@
 .navBox {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-right: 60px;
 }
 
 .link {
   display: inline-block;
   text-decoration: none;
   padding: 12px;
-  color: #060e0f;
+  color: #204454;
   font-weight: 500;
-  font-size: 27px;
 }
 
 .link:hover {

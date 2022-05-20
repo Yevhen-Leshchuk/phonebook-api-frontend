@@ -23,7 +23,8 @@ const middleware = getDefaultMiddleware => [
     },
   }),
   contactApi.middleware,
-  // logger,
+  authApi.middleware,
+  logger,
 ];
 
 const authPersistConfig = {

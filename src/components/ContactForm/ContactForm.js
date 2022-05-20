@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
-import { notice, success } from '@pnotify/core/dist/PNotify.js';
-import '@pnotify/core/dist/PNotify.css';
-import '@pnotify/core/dist/BrightTheme.css';
 import {
   useFetchContactsQuery,
   useAddContactMutation,
   useUpdateContactMutation,
 } from 'redux/contacts/contactsSlice';
+import {
+  showMessageSameContactName,
+  showMessageSameContactPhone,
+  showMessageAddContact,
+  showMessageUpdateContact,
+} from 'components/Notification/Notification';
 import { useLogInMutation } from 'redux/auth/authSlice';
 import LoaderButton from 'components/LoaderButton';
 import s from './ContactForm.module.css';
@@ -26,28 +30,34 @@ const validationSchema = Yup.object({
     .required('Required'),
 });
 
-export default function ContactForm({ name, number, id }) {
-  const [nameValue, setNameValue] = useState('');
-  const [numberValue, setNumberValue] = useState('');
-
+export default function ContactForm({ id }) {
   let navigate = useNavigate();
-
-  useEffect(() => {
-    setNameValue(name);
-    setNumberValue(number);
-  }, [name, number]);
-
   const [logIn, { data: user }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
   const token = user?.token;
-
   const { data } = useFetchContactsQuery(token);
-  const [addContact, { isLoading: isAdding }] = useAddContactMutation();
-  const [updateContact] = useUpdateContactMutation();
-
+  const [addContact, { data: addedUser, isLoading: isAdding }] =
+    useAddContactMutation();
+  const [updateContact, { originalArgs }] = useUpdateContactMutation();
   const nameInputId = nanoid();
   const numberInputId = nanoid();
+
+  useEffect(() => {
+    if (!addedUser) {
+      return;
+    }
+
+    showMessageAddContact();
+  }, [addedUser]);
+
+  useEffect(() => {
+    if (!originalArgs) {
+      return;
+    }
+
+    showMessageUpdateContact();
+  }, [originalArgs]);
 
   const checkContactName = name => {
     const checkName = name.toLowerCase();
@@ -61,66 +71,46 @@ export default function ContactForm({ name, number, id }) {
     return data?.find(contact => contact.number === checkNumber);
   };
 
-  const showMessageSameContactName = () => {
-    notice({
-      text: 'This name already exists',
-      width: '370px',
-    });
+  const initialValues = {
+    name: '',
+    number: '',
+    token,
   };
 
-  const showMessageSameContactPhone = () => {
-    notice({
-      text: 'This phone already exists',
-      width: '370px',
-    });
-  };
+  const onSubmit = (values, { resetForm }) => {
+    const update = {
+      ...values,
+      id,
+    };
 
-  const showMessageAddContact = () => {
-    success({
-      text: 'Contact added successfully!',
-      width: '370px',
-    });
-  };
+    if (update.id !== undefined) {
+      updateContact(update);
+      navigate('/contacts');
+      resetForm();
+    } else {
+      if (checkContactName(values.name)) {
+        showMessageSameContactName();
+        return;
+      }
 
-  const showMessageupdateContact = () => {
-    success({
-      text: 'Contact successfully updated!',
-      width: '370px',
-    });
+      if (checkContactNumber(values.number)) {
+        showMessageSameContactPhone();
+        return;
+      }
+
+      addContact(values);
+    }
+    resetForm();
   };
 
   return (
-    <>
+    <div className={s.contactFormBox}>
+      <h2 className={s.title}>Phonebook</h2>
+
       <Formik
-        initialValues={{ name: '', number: '', token }}
+        initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          const update = {
-            ...values,
-            id,
-          };
-
-          if (update.id !== undefined) {
-            updateContact(update);
-            showMessageupdateContact();
-            navigate('/contacts');
-            resetForm();
-          } else {
-            if (checkContactName(values.name)) {
-              showMessageSameContactName();
-              return;
-            }
-
-            if (checkContactNumber(values.number)) {
-              showMessageSameContactPhone();
-              return;
-            }
-
-            addContact(values);
-            showMessageAddContact();
-          }
-          resetForm();
-        }}
+        onSubmit={onSubmit}
       >
         <Form className={s.form}>
           <label className={s.nameLabel} htmlFor={nameInputId}>
@@ -151,11 +141,15 @@ export default function ContactForm({ name, number, id }) {
             <ErrorMessage name="number" />
           </p>
           <button className={s.button} type="submit" disabled={isAdding}>
-            <span className={s.TextButton}>Save contact</span>
+            <span className={s.textButton}>Save contact</span>
             {isAdding && <LoaderButton />}
           </button>
         </Form>
       </Formik>
-    </>
+    </div>
   );
 }
+
+ContactForm.propTypes = {
+  id: PropTypes.string,
+};

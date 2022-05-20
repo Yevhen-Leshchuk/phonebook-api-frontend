@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
 import { useRegisterMutation } from 'redux/auth/authSlice';
+import {
+  showMessageRegisterUser,
+  showMessageErrorRegisterUser,
+} from 'components/Notification/Notification';
+import LoaderButton from 'components/LoaderButton';
 import s from './RegistrationForm.module.css';
 
 const validationSchema = Yup.object({
@@ -23,11 +30,33 @@ const initialValues = {
 };
 
 const RegistrationForm = () => {
-  const [register, { isLoading: isAdding }] = useRegisterMutation();
-
+  const [register, { data, error, isLoading: isAdding }] =
+    useRegisterMutation();
+  let navigate = useNavigate();
   const nameInputId = nanoid();
   const emailInputId = nanoid();
   const passwordInputId = nanoid();
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    navigate('/login');
+    showMessageRegisterUser();
+  }, [data, navigate]);
+
+  useEffect(() => {
+    if (!error?.status) {
+      return;
+    }
+    showMessageErrorRegisterUser();
+  }, [error?.status]);
+
+  const onSubmit = (values, { resetForm }) => {
+    register(values);
+    resetForm();
+  };
+
   return (
     <div className={s.formBox}>
       <h2 className={s.formTitle}>
@@ -37,22 +66,7 @@ const RegistrationForm = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          console.log(values);
-          // if (checkContactName(values.name)) {
-          //   showMessageSameContactName();
-          //   return;
-          // }
-
-          // if (checkContactNumber(values.phone)) {
-          //   showMessageSameContactPhone();
-          //   return;
-          // }
-
-          register(values);
-          // showMessageAddContact();
-          resetForm();
-        }}
+        onSubmit={onSubmit}
       >
         <Form className={s.form} noValidate>
           <label className={s.nameLabel} htmlFor={nameInputId}>
@@ -97,8 +111,8 @@ const RegistrationForm = () => {
             <ErrorMessage name="password" />
           </p>
           <button className={s.button} type="submit" disabled={null}>
-            <span className={s.TextButton}>Submit</span>
-            {/* {isAdding && <LoaderButton />} */}
+            <span className={s.textButton}>Submit</span>
+            {isAdding && <LoaderButton />}
           </button>
         </Form>
       </Formik>

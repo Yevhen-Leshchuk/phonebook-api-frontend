@@ -1,0 +1,34 @@
+.contactFormBox {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 200px;
+  padding-top: 50px;
+}
+
+.goBackBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  padding: 5px;
+  min-width: 100px;
+  background: transparent;
+  border-radius: 5px;
+  border: 1px solid #52baee;
+  background-color: #52baee;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: border-color 0.25s,
+    background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.goBackBtn:hover {
+  background-color: #fad230;
+  border: 1px solid #fad230;
+  color: #ffffff;
+}

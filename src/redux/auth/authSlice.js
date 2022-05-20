@@ -48,9 +48,5 @@ export const authApi = createApi({
   }),
 });
 
-export const {
-  // useFetchContactsQuery,
-  useRegisterMutation,
-  useLogInMutation,
-  useLogOutMutation,
-} = authApi;
+export const { useRegisterMutation, useLogInMutation, useLogOutMutation } =
+  authApi;

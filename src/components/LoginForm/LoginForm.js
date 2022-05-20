@@ -2,6 +2,11 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
 import { useLogInMutation } from 'redux/auth/authSlice';
+import {
+  showMessageWelcomeUser,
+  showMessageErrorLoginUser,
+} from 'components/Notification/Notification';
+import LoaderButton from 'components/LoaderButton';
 import s from './LoginForm.module.css';
 
 const validationSchema = Yup.object({
@@ -18,12 +23,26 @@ const initialValues = {
 };
 
 const LoginForm = () => {
-  const [logIn, { isLoading: isAdding }] = useLogInMutation({
+  const [logIn, { isLoading: isloggingIn }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
 
   const emailInputId = nanoid();
   const passwordInputId = nanoid();
+
+  const onLogin = async values => {
+    const response = await logIn(values);
+    if (response?.data) {
+      showMessageWelcomeUser();
+    } else {
+      showMessageErrorLoginUser();
+    }
+  };
+
+  const onSubmit = (values, { resetForm }) => {
+    onLogin(values);
+    resetForm();
+  };
 
   return (
     <div className={s.formBox}>
@@ -34,21 +53,7 @@ const LoginForm = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          // if (checkContactName(values.name)) {
-          //   showMessageSameContactName();
-          //   return;
-          // }
-
-          // if (checkContactNumber(values.phone)) {
-          //   showMessageSameContactPhone();
-          //   return;
-          // }
-
-          logIn(values);
-          // showMessageAddContact();
-          resetForm();
-        }}
+        onSubmit={onSubmit}
       >
         <Form className={s.form} noValidate>
           <label className={s.label} htmlFor={emailInputId}>
@@ -80,7 +85,7 @@ const LoginForm = () => {
           </p>
           <button className={s.button} type="submit" disabled={null}>
             <span className={s.TextButton}>Submit</span>
-            {/* {isAdding && <LoaderButton />} */}
+            {isloggingIn && <LoaderButton />}
           </button>
         </Form>
       </Formik>

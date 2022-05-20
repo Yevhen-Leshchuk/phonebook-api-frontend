@@ -2,9 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   id: '',
-  // user: { id: null, name: null, email: null },
-  // token: '',
-  // isLoading: false,
 };
 
 const updateSlice = createSlice({

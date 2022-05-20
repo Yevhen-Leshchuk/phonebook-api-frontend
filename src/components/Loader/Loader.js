@@ -6,7 +6,7 @@ const Loader = () => {
     <div className={s.LoaderBox}>
       <Rings
         ariaLabel="loading-indicator"
-        color="#c9c9c9"
+        color="#52baee"
         height={80}
         width={80}
       />

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Section from 'components/Section';
 import ContactForm from 'components/ContactForm';
 import { useFetchContactsQuery } from 'redux/contacts/contactsSlice';
 import { useLogInMutation } from 'redux/auth/authSlice';
-import s from './ContactsEditPage .module.css';
+import s from './ContactsEditPage.module.css';
 
 const ContactsEditPage = () => {
+  const navigate = useNavigate();
   const [userupdate, setUserUpdate] = useState(null);
   const [logIn, { data: user }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
@@ -19,10 +21,6 @@ const ContactsEditPage = () => {
     const parsedSettings = JSON.parse(persistStorage);
     const userId = parsedSettings.id.replace(/^"|"$/g, '');
 
-    // if (userupdate?.id !== userId) {
-    //   return;
-    // }
-
     const getUserById = userId => {
       return data?.find(contact => contact.id === userId);
     };
@@ -33,13 +31,22 @@ const ContactsEditPage = () => {
     return () => {
       setUserUpdate(null);
     };
-  });
+  }, [data]);
 
   return (
     <>
-      <Section title="Phonebook">
-        <ContactForm {...userupdate} />
-      </Section>
+      <div className={s.contactFormBox}>
+        <Section>
+          <ContactForm {...userupdate} />
+        </Section>
+      </div>
+      <button
+        className={s.goBackBtn}
+        type="button"
+        onClick={() => navigate(-1)}
+      >
+        Go back
+      </button>
     </>
   );
 };

@@ -1,7 +1,13 @@
 import s from './HomePage.module.css';
 
 const HomePage = () => {
-  return <h2>HomePage</h2>;
+  return (
+    <>
+      <div className={s.homePage}>
+        <h1 className={s.title}>PHONEBOOK</h1>
+      </div>
+    </>
+  );
 };
 
 export default HomePage;

@@ -2,15 +2,45 @@
   display: flex;
   align-items: center;
   font-weight: 500;
-  font-size: 27px;
 }
 
 .userName {
+  margin-top: 0;
+  margin-bottom: 0;
   margin-right: 20px;
+  font-size: 21px;
 }
 
-.LogoutBtn {
-  width: 80px;
+.logoutBtn {
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto;
+  border-style: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.userImageBox {
+  width: 40px;
   height: 40px;
-  border-radius: 5px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.userImage {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.logoutImg {
+  width: 32px;
+  height: 32px;
+  fill: #204454;
+  cursor: pointer;
+  transition: fill 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logoutImg:hover {
+  fill: #fad230;
 }
