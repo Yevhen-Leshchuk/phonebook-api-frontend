@@ -1,0 +1,22 @@
+.navBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px;
+  color: #204454;
+  font-weight: 500;
+}
+
+.link:hover {
+  color: #ffffff;
+}
+
+.activeLink {
+  composes: link;
+  color: #ffffff;
+}

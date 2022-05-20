@@ -1,0 +1,16 @@
+.homePage {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 100px;
+  background-image: url('images/phonebook.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 56px;
+  color: #204454;
+}

@@ -1,0 +1,26 @@
+.contactsListBox {
+  width: 600px;
+  height: auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: hsla(0, 0%, 100%, 0.9);
+  box-shadow: 0 5px 20px -8px #52baee;
+}
+
+.title {
+  text-align: center;
+  font-size: 35px;
+  color: #204454;
+  text-transform: uppercase;
+}
+
+.contactsBox {
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.error {
+  font-size: 28px;
+  color: #204454;
+  text-align: center;
+}

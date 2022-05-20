@@ -1,0 +1,80 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 18px;
+  color: #204454;
+  border-bottom: 1px solid #ececec;
+}
+
+.item:first-child {
+  border-top: 1px solid #ececec;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.itemName {
+  display: inline-block;
+  width: 100px;
+  margin-top: 0;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+.itemNumber {
+  composes: itemName;
+  margin-right: 0;
+  margin-bottom: 0;
+}
+.titleName,
+.titleNumber {
+  composes: itemName;
+  margin-right: 0;
+}
+
+.contactsListItemButtonBox {
+  display: flex;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  padding: 5px;
+  min-width: 100px;
+  background: transparent;
+  border-radius: 5px;
+  border: 1px solid #52baee;
+  color: #52baee;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: border-color 0.25s,
+    background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.buttonEdit {
+  composes: button;
+  background-color: #52baee;
+  color: #ffffff;
+  margin-right: 0;
+}
+
+.button:hover {
+  background-color: #fad230;
+  border: 1px solid #fad230;
+  color: #ffffff;
+}
+
+.textButton {
+  margin-right: 5px;
+}
