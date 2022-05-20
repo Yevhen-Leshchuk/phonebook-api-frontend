@@ -13,6 +13,7 @@ const ContactsListItem = ({ name, number, id }) => {
   const [logIn, { data: user }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
+
   const token = user?.token;
   const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
   const dispatch = useDispatch();

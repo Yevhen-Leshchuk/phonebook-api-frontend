@@ -11,6 +11,7 @@ const ContactList = () => {
   const [logIn, { data: user }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
+
   const token = user?.token;
   const { data, isFetching } = useFetchContactsQuery(token);
 

@@ -6,7 +6,9 @@ const PublicRoute = ({ children, restricted = false, redirectTo = '/' }) => {
   const [logIn, { isSuccess: isLogging }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
+
   const loginedRedirect = isLogging && restricted;
+
   return (
     <>
       {loginedRedirect ? <Navigate to={redirectTo} replace={true} /> : children}
