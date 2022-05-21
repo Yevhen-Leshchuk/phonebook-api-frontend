@@ -9,7 +9,7 @@ const UserMenu = () => {
   const [logIn, data] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
-
+  console.log(logIn);
   const token = data?.data?.token;
   const name = data?.data?.user?.name;
   const dispatch = useDispatch();

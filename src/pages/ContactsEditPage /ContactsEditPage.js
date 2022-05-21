@@ -12,7 +12,7 @@ const ContactsEditPage = () => {
   const [logIn, { data: user }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
-
+  console.log(logIn);
   const token = user?.token;
   const { data } = useFetchContactsQuery(token);
 

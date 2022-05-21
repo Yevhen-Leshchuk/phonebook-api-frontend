@@ -9,7 +9,7 @@ const Navigation = () => {
   const [logIn, { isSuccess }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
-
+  console.log(logIn);
   const location = useLocation();
   const showEditContactLink = location.pathname === '/contacts-update';
 
