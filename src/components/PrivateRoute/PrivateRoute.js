@@ -6,6 +6,7 @@ const PrivateRoute = ({ children, redirectTo = '/' }) => {
   const [logIn, { isSuccess: isLogging }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
+  console.log(logIn);
 
   return isLogging ? children : <Navigate to={redirectTo} replace={true} />;
 };

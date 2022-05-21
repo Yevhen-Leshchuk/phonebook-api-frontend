@@ -6,7 +6,7 @@ const PublicRoute = ({ children, restricted = false, redirectTo = '/' }) => {
   const [logIn, { isSuccess: isLogging }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
-
+  console.log(logIn);
   const loginedRedirect = isLogging && restricted;
 
   return (

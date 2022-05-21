@@ -35,6 +35,7 @@ export default function ContactForm({ id }) {
   const [logIn, { data: user }] = useLogInMutation({
     fixedCacheKey: 'shared-logIn',
   });
+  console.log(logIn);
   const token = user?.token;
   const { data } = useFetchContactsQuery(token);
   const [addContact, { data: addedUser, isLoading: isAdding }] =
