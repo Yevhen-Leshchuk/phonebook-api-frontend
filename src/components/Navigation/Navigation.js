@@ -1,15 +1,14 @@
 import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { useLogInMutation } from 'redux/auth/authSlice';
+import { useSelector } from 'react-redux';
 import AuthNav from 'components/AuthNav';
 import UserMenu from 'components/UserMenu';
+import { getIsLogged } from 'redux/auth/userDataSelectors';
 import s from './Navigation.module.css';
 
 const Navigation = () => {
-  const [logIn, { isSuccess }] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
-  console.log(logIn);
+  const isLogged = useSelector(getIsLogged);
+
   const location = useLocation();
   const showEditContactLink = location.pathname === '/contacts-update';
 
@@ -26,7 +25,7 @@ const Navigation = () => {
             Home
           </NavLink>
 
-          {isSuccess && (
+          {isLogged && (
             <NavLink
               to="contacts"
               className={({ isActive }) =>
@@ -47,7 +46,7 @@ const Navigation = () => {
           </NavLink>
         </div>
 
-        {isSuccess ? <UserMenu /> : <AuthNav />}
+        {isLogged ? <UserMenu /> : <AuthNav />}
       </nav>
     </>
   );

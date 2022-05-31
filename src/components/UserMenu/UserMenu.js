@@ -1,18 +1,17 @@
-import { useLogInMutation, useLogOutMutation } from 'redux/auth/authSlice';
+import { useLogOutMutation } from 'redux/auth/authSlice';
 import { authApi } from 'redux/auth/authSlice';
-import { useDispatch } from 'react-redux';
-import userImg from '../../images/user.png';
+import { contactApi } from 'redux/contacts/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { loggedOut } from 'redux/auth/userDataReducer';
+import { getUserName } from 'redux/auth/userDataSelectors';
+import userImg from '../../images/hacker.png';
 import { ReactComponent as Logout } from '../../images/logout.svg';
 import s from './UserMenu.module.css';
 
 const UserMenu = () => {
-  const [logIn, data] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
-  console.log(logIn);
-  const token = data?.data?.token;
-  const name = data?.data?.user?.name;
+  const name = useSelector(getUserName);
   const dispatch = useDispatch();
+
   const [logOut] = useLogOutMutation();
 
   return (
@@ -25,8 +24,10 @@ const UserMenu = () => {
         className={s.logoutBtn}
         type="submit"
         onClick={() => {
-          logOut(token);
+          logOut();
           dispatch(authApi.util.resetApiState());
+          dispatch(contactApi.util.resetApiState());
+          dispatch(loggedOut());
         }}
       >
         <Logout className={s.logoutImg} />

@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
@@ -6,6 +7,7 @@ import {
   showMessageWelcomeUser,
   showMessageErrorLoginUser,
 } from 'components/Notification/Notification';
+import { actionToken, actionUser, loggedOn } from 'redux/auth/userDataReducer';
 import LoaderButton from 'components/LoaderButton';
 import s from './LoginForm.module.css';
 
@@ -23,16 +25,21 @@ const initialValues = {
 };
 
 const LoginForm = () => {
-  const [logIn, { isLoading: isloggingIn }] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
+  const dispatch = useDispatch();
+
+  const [logIn, { isLoading: isloggingIn }] = useLogInMutation();
 
   const emailInputId = nanoid();
   const passwordInputId = nanoid();
 
   const onLogin = async values => {
     const response = await logIn(values);
+
     if (response?.data) {
+      dispatch(actionToken(response.data.token));
+      dispatch(actionUser(response.data.user));
+      dispatch(loggedOn());
+
       showMessageWelcomeUser();
     } else {
       showMessageErrorLoginUser();

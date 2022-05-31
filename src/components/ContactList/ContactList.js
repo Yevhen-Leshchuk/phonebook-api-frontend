@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useFetchContactsQuery } from 'redux/contacts/contactsSlice';
-import { useLogInMutation } from 'redux/auth/authSlice';
 import Loader from 'components/Loader';
 import ContactListItem from 'components/ContactListItem';
 import Filter from 'components/Filter';
@@ -8,12 +7,8 @@ import s from './ContactList.module.css';
 
 const ContactList = () => {
   const [filter, setFilter] = useState('');
-  const [logIn, { data: user }] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
-  console.log(logIn);
-  const token = user?.token;
-  const { data, isFetching } = useFetchContactsQuery(token);
+
+  const { data, isFetching } = useFetchContactsQuery();
 
   const onChange = event => {
     const { value } = event.currentTarget;

@@ -30,12 +30,13 @@ const initialValues = {
 };
 
 const RegistrationForm = () => {
-  const [register, { data, error, isLoading: isAdding }] =
-    useRegisterMutation();
   let navigate = useNavigate();
   const nameInputId = nanoid();
   const emailInputId = nanoid();
   const passwordInputId = nanoid();
+
+  const [register, { data, error, isLoading: isAdding }] =
+    useRegisterMutation();
 
   useEffect(() => {
     if (!data) {

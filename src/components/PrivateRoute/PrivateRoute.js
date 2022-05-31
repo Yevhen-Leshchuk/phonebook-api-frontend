@@ -1,14 +1,12 @@
 import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useLogInMutation } from 'redux/auth/authSlice';
+import { getIsLogged } from 'redux/auth/userDataSelectors';
 
 const PrivateRoute = ({ children, redirectTo = '/' }) => {
-  const [logIn, { isSuccess: isLogging }] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
-  console.log(logIn);
+  const isLogged = useSelector(getIsLogged);
 
-  return isLogging ? children : <Navigate to={redirectTo} replace={true} />;
+  return isLogged ? children : <Navigate to={redirectTo} replace={true} />;
 };
 
 PrivateRoute.propTypes = {

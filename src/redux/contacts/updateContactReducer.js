@@ -4,7 +4,7 @@ const initialState = {
   id: '',
 };
 
-const updateSlice = createSlice({
+const updateContactSlice = createSlice({
   name: 'updateContact',
   initialState: initialState,
   reducers: {
@@ -14,5 +14,5 @@ const updateSlice = createSlice({
   },
 });
 
-export const { updateContact } = updateSlice.actions;
-export const updateReducer = updateSlice.reducer;
+export const { updateContact } = updateContactSlice.actions;
+export const updateContactReducer = updateContactSlice.reducer;
