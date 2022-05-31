@@ -15,7 +15,6 @@ import {
   showMessageAddContact,
   showMessageUpdateContact,
 } from 'components/Notification/Notification';
-import { useLogInMutation } from 'redux/auth/authSlice';
 import LoaderButton from 'components/LoaderButton';
 import s from './ContactForm.module.css';
 
@@ -32,15 +31,12 @@ const validationSchema = Yup.object({
 
 export default function ContactForm({ id }) {
   let navigate = useNavigate();
-  const [logIn, { data: user }] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
-  console.log(logIn);
-  const token = user?.token;
-  const { data } = useFetchContactsQuery(token);
+
+  const { data } = useFetchContactsQuery();
   const [addContact, { data: addedUser, isLoading: isAdding }] =
     useAddContactMutation();
   const [updateContact, { originalArgs }] = useUpdateContactMutation();
+
   const nameInputId = nanoid();
   const numberInputId = nanoid();
 
@@ -75,7 +71,6 @@ export default function ContactForm({ id }) {
   const initialValues = {
     name: '',
     number: '',
-    token,
   };
 
   const onSubmit = (values, { resetForm }) => {

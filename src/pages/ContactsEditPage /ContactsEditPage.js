@@ -1,26 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Section from 'components/Section';
 import ContactForm from 'components/ContactForm';
 import { useFetchContactsQuery } from 'redux/contacts/contactsSlice';
-import { useLogInMutation } from 'redux/auth/authSlice';
+import { getUserId } from 'redux/contacts/contactSelectors';
 import s from './ContactsEditPage.module.css';
 
 const ContactsEditPage = () => {
   const navigate = useNavigate();
+  const userId = useSelector(getUserId);
+
   const [userupdate, setUserUpdate] = useState(null);
-  const [logIn, { data: user }] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
-  console.log(logIn);
-  const token = user?.token;
-  const { data } = useFetchContactsQuery(token);
+
+  const { data } = useFetchContactsQuery();
 
   useEffect(() => {
-    const persistStorage = localStorage.getItem('persist:updateContact');
-    const parsedSettings = JSON.parse(persistStorage);
-    const userId = parsedSettings.id.replace(/^"|"$/g, '');
-
     const getUserById = userId => {
       return data?.find(contact => contact.id === userId);
     };
@@ -31,7 +26,7 @@ const ContactsEditPage = () => {
     return () => {
       setUserUpdate(null);
     };
-  }, [data]);
+  }, [data, userId]);
 
   return (
     <>

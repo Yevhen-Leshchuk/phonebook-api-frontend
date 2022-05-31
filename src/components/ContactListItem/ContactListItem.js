@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useDeleteContactMutation } from 'redux/contacts/contactsSlice';
-import { useLogInMutation } from 'redux/auth/authSlice';
 import { updateContact } from 'redux/contacts/updateContactReducer';
 import { showMessageDeleteContact } from 'components/Notification/Notification';
 import LoaderButton from 'components/LoaderButton';
@@ -10,17 +9,9 @@ import s from './ContactListItem.module.css';
 
 const ContactsListItem = ({ name, number, id }) => {
   let navigate = useNavigate();
-  const [logIn, { data: user }] = useLogInMutation({
-    fixedCacheKey: 'shared-logIn',
-  });
-  console.log(logIn);
-  const token = user?.token;
+
   const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
   const dispatch = useDispatch();
-  const deleteValues = {
-    id,
-    token,
-  };
 
   return (
     <li className={s.item} key={name}>
@@ -38,7 +29,7 @@ const ContactsListItem = ({ name, number, id }) => {
           className={s.button}
           type="button"
           onClick={() => {
-            deleteContact(deleteValues);
+            deleteContact(id);
             showMessageDeleteContact();
           }}
           disabled={isDeleting}

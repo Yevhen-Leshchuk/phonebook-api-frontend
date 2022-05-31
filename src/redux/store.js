@@ -10,11 +10,11 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import logger from 'redux-logger';
 import { contactApi } from './contacts/contactsSlice';
 import { authApi } from './auth/authSlice';
-import { updateReducer } from './contacts/updateContactReducer';
+import { updateContactReducer } from './contacts/updateContactReducer';
+import { userDataReducer } from './auth/userDataReducer';
 
 const middleware = getDefaultMiddleware => [
   ...getDefaultMiddleware({
@@ -27,23 +27,18 @@ const middleware = getDefaultMiddleware => [
   logger,
 ];
 
-const authPersistConfig = {
-  key: 'Auth',
+const userDataPersistConfig = {
+  key: 'userData',
   storage,
-  stateReconciler: hardSet,
-};
-
-const updateContactPersistConfig = {
-  key: 'updateContact',
-  storage,
-  whitelist: ['id'],
+  whitelist: ['token'],
 };
 
 export const store = configureStore({
   reducer: {
     [contactApi.reducerPath]: contactApi.reducer,
-    [authApi.reducerPath]: persistReducer(authPersistConfig, authApi.reducer),
-    updateReducer: persistReducer(updateContactPersistConfig, updateReducer),
+    [authApi.reducerPath]: authApi.reducer,
+    updateContact: updateContactReducer,
+    userData: persistReducer(userDataPersistConfig, userDataReducer),
   },
   devTools: process.env.NODE_ENV === 'development',
   middleware,
