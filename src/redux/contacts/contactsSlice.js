@@ -25,17 +25,6 @@ export const contactApi = createApi({
       providesTags: ['Contact'],
     }),
 
-    fetchCurrentUser: builder.query({
-      query: token => ({
-        url: `/users/current`,
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
-      providesTags: ['Contact'],
-    }),
-
     addContact: builder.mutation({
       query: ({ name, number }) => ({
         url: '/contacts',
@@ -72,7 +61,6 @@ export const contactApi = createApi({
 
 export const {
   useFetchContactsQuery,
-  useFetchCurrentUserQuery,
   useAddContactMutation,
   useDeleteContactMutation,
   useUpdateContactMutation,

@@ -18,6 +18,17 @@ export const authApi = createApi({
   tagTypes: ['Auth'],
 
   endpoints: builder => ({
+    fetchCurrentUser: builder.query({
+      query: token => ({
+        url: `/users/current`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      providesTags: ['Contact'],
+    }),
+
     register: builder.mutation({
       query: ({ name, email, password }) => ({
         url: '/users/signup',
@@ -53,5 +64,9 @@ export const authApi = createApi({
   }),
 });
 
-export const { useRegisterMutation, useLogInMutation, useLogOutMutation } =
-  authApi;
+export const {
+  useFetchCurrentUserQuery,
+  useRegisterMutation,
+  useLogInMutation,
+  useLogOutMutation,
+} = authApi;

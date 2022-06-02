@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useFetchContactsQuery } from 'redux/contacts/contactsSlice';
 import Loader from 'components/Loader';
 import ContactListItem from 'components/ContactListItem';
 import Filter from 'components/Filter';
+import plug from '../../images/error.png';
 import s from './ContactList.module.css';
 
 const ContactList = () => {
@@ -32,17 +34,22 @@ const ContactList = () => {
         <h2 className={s.title}>Contacts</h2>
 
         <Filter onChange={onChange} filter={filter} />
-
-        <ul className={s.contactsBox}>
-          {isFetching && <Loader />}
-          {showNotFoundContacts && (
+        {isFetching && <Loader />}
+        {showNotFoundContacts && (
+          <div className={s.plugImageBox}>
             <h1 className={s.error}>Contacts not found!</h1>
-          )}
+            <img className={s.plugImage} src={plug} alt="Movies not found" />
+          </div>
+        )}
+
+        <TransitionGroup component="ul" className={s.contactsBox}>
           {contacts &&
             contacts.map(contact => (
-              <ContactListItem key={contact.id} {...contact} />
+              <CSSTransition key={contact.id} timeout={500} classNames={s}>
+                <ContactListItem id={contact.id} {...contact} />
+              </CSSTransition>
             ))}
-        </ul>
+        </TransitionGroup>
       </div>
     </>
   );

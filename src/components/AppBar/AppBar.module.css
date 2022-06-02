@@ -10,3 +10,12 @@
   background-color: #52baee;
   box-shadow: 0 5px 20px -5px #52baee;
 }
+
+.appear {
+  transform: translateX(100%);
+}
+
+.appearActive {
+  transform: translateX(0);
+  transition: transform 500ms linear;
+}

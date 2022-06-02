@@ -7,7 +7,7 @@ import Layout from 'components/Layout';
 import Loader from 'components/Loader';
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
 import PublicRoute from 'components/PublicRoute';
-import { useFetchCurrentUserQuery } from 'redux/contacts/contactsSlice';
+import { useFetchCurrentUserQuery } from 'redux/auth/authSlice';
 import { actionUser, actionToken, loggedOn } from 'redux/auth/userDataReducer';
 import { getToken } from 'redux/auth/userDataSelectors';
 
