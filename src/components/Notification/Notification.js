@@ -1,6 +1,7 @@
 import { notice, success, error } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
+import './notification.css';
 
 export const showMessageSameContactName = () => {
   notice({
