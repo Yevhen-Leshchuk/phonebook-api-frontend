@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkphonebook_api_frontend=self.webpackChunkphonebook_api_frontend||[]).push([[460],{1541:function(e,n,a){a.r(n),a.d(n,{default:function(){return s}});var o="HomePage_homePage__GDK2b",r="HomePage_title__UFLA3",t=a(3329),s=function(){return(0,t.jsx)(t.Fragment,{children:(0,t.jsx)("div",{className:o,children:(0,t.jsx)("h1",{className:r,children:"PHONEBOOK"})})})}}}]);
-//# sourceMappingURL=HomePage.57cb4d88.chunk.js.map
