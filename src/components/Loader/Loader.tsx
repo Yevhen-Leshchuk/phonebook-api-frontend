@@ -7,8 +7,8 @@ const Loader = () => {
       <Rings
         ariaLabel="loading-indicator"
         color="#52baee"
-        height={80}
-        width={80}
+        height={78}
+        width={78}
       />
     </div>
   );
