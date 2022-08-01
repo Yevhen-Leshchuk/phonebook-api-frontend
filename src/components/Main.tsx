@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import Layout from './Layout';
-import Loader from './Loader';
+import Loader from './Loader/Loader';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import { useFetchCurrentUserQuery } from '../redux/auth/authSlice';

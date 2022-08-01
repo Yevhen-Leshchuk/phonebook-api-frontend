@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useFetchContactsQuery } from '../../redux/contacts/contactsSlice';
-import Loader from '../Loader';
+import LoaderButton from '../LoaderButton';
 import ContactListItem from '../ContactListItem';
 import Filter from '../Filter';
 import plug from '../../images/error.png';
@@ -32,7 +32,7 @@ const ContactList = () => {
         <h2 className={s.title}>Contacts</h2>
 
         <Filter onChange={onChange} filter={filter} />
-        {isFetching && <Loader />}
+        {isFetching && <LoaderButton />}
         {showNotFoundContacts && (
           <div className={s.plugImageBox}>
             <h1 className={s.error}>Contacts not found!</h1>

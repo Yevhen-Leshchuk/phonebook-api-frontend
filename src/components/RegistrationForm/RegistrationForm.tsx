@@ -8,7 +8,7 @@ import {
   showMessageRegisterUser,
   showMessageErrorRegisterUser,
 } from '../Notification/Notification';
-import Loader from '../Loader';
+import LoaderButton from '../LoaderButton';
 import IInitValues from '../../interfaces/InitValues.intarface';
 import s from './RegistrationForm.module.css';
 
@@ -117,7 +117,7 @@ const RegistrationForm = () => {
           </p>
           <button className={s.button} type="submit">
             <span className={s.textButton}>Submit</span>
-            {isAdding && <Loader />}
+            {isAdding && <LoaderButton />}
           </button>
         </Form>
       </Formik>

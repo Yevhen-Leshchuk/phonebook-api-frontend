@@ -14,7 +14,7 @@ import {
   showMessageAddContact,
   showMessageUpdateContact,
 } from '../../components/Notification/Notification';
-import Loader from '../Loader';
+import LoaderButton from '../LoaderButton';
 import IInitValues from '../../interfaces/InitValues.intarface';
 import s from './ContactForm.module.css';
 
@@ -145,7 +145,7 @@ export default function ContactForm({ id }: Props) {
           </p>
           <button className={s.button} type="submit" disabled={isAdding}>
             <span className={s.textButton}>Save contact</span>
-            {isAdding && <Loader />}
+            {isAdding && <LoaderButton />}
           </button>
         </Form>
       </Formik>

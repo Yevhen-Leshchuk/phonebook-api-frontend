@@ -12,7 +12,7 @@ import {
   actionUser,
   loggedOn,
 } from '../../redux/auth/userDataReducer';
-import Loader from '../Loader';
+import LoaderButton from '../LoaderButton';
 import IInitValues from '../../interfaces/InitValues.intarface';
 import s from './LoginForm.module.css';
 
@@ -102,7 +102,7 @@ const LoginForm = () => {
           </p>
           <button className={s.button} type="submit">
             <span className={s.TextButton}>Submit</span>
-            {isloggingIn && <Loader />}
+            {isloggingIn && <LoaderButton />}
           </button>
         </Form>
       </Formik>

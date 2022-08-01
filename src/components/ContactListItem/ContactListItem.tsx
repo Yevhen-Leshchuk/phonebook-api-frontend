@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useDeleteContactMutation } from '../../redux/contacts/contactsSlice';
 import { updateContact } from '../../redux/contacts/updateContactReducer';
 import { showMessageDeleteContact } from '../Notification/Notification';
-import Loader from '../Loader';
+import LoaderButton from '../LoaderButton';
 import s from './ContactListItem.module.css';
 
 interface Props {
@@ -40,7 +40,7 @@ const ContactsListItem = ({ name, number, id }: Props) => {
           disabled={isDeleting}
         >
           <span className={s.textButton}>Delete</span>
-          {isDeleting && <Loader />}
+          {isDeleting && <LoaderButton />}
         </button>
         <button
           className={s.buttonEdit}

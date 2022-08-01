@@ -1,10 +1,10 @@
-import RiseLoader from 'react-spinners/RiseLoader';
+import DotLoader from 'react-spinners/DotLoader';
 import s from './Loader.module.css';
 
 const Loader = () => {
   return (
     <div className={s.LoaderBox}>
-      <RiseLoader color="#52baee" size={10} speedMultiplier={1} />
+      <DotLoader color="#52baee" />
     </div>
   );
 };
